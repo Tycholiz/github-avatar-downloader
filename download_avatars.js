@@ -13,13 +13,15 @@ function getRepoContributors(repoOwner, repoName, cb) { //need callback to handl
       'Authorization': secrets.GITHUB_TOKEN
     }
   };
+  if (!process.argv[3]) {
+  console.log("must enter 2 parameters");
+}
 
   request(options, function(err, res, body) {
     if (err) {
       cb(err);
       return;
     }
-
 
     var json = JSON.parse(body);
     cb(undefined, json);
@@ -32,7 +34,6 @@ function getRepoContributors(repoOwner, repoName, cb) { //need callback to handl
 
 
 function downloadImageByURL(url, filePath) {
-  console.log("sure boss, ima go get ", url, " and drop it in ", filePath)
   request.get(url)
           .on('error', function (err) {
              throw err;
@@ -48,7 +49,13 @@ function downloadImageByURL(url, filePath) {
 
 // downloadImageByURL("https://avatars2.githubusercontent.com/u/2741?v=3&s=466", "avatars/kvirani.jpg");
 
-getRepoContributors("jquery", "jquery", function(err, result) {
+if (!process.argv[3]) {
+  console.log("must enter 2 parameters");
+}
+var owner = process.argv[2];
+var repo = process.argv[3];
+getRepoContributors(owner, repo, function(err, result) {
+
   // console.log("Errors:", err);
   // console.log("Result:", result);
 
